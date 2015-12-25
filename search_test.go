@@ -6,7 +6,7 @@ import (
 )
 
 func TestParameters(*testing.T) {
-	p := SearchParameters{}
+	p := searchParameters{}
 	typ := reflect.TypeOf(p)
 	for i := 0; i < typ.NumField(); i++ {
     f := typ.Field(i)
@@ -18,7 +18,7 @@ func TestParameters(*testing.T) {
 }
 
 func TestSearchFunction(*testing.T) {
-	params := SearchParameters{
+	params := searchParameters{
 		Query: "Blakroc",
 		Type: "album",
 	}

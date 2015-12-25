@@ -3,9 +3,9 @@ import "errors"
 
 const URI = "/database/search"
 
-type SearchParameters struct {
+type searchParameters struct {
 	// See; https://www.discogs.com/developers/#page:database,header:database-search
-	Query		string    `json:"q,omitempty"`
+	Query			string    `json:"q,omitempty"`
 	// Your search query
 	// string (optional) Example: nirvana
 	Type			string	`choices:"release,master,artist,label"`
@@ -77,16 +77,19 @@ type SearchParameters struct {
 	// Search contributor usernames.
 }
 
-func (SearchParameters) Validate() (error) {
+type SearchResult struct {}
+
+
+func (searchParameters) Validate() (error) {
 	return errors.New("invalid search parameters")
 }
 
-func (SearchParameters) Run() (results interface{}, err error) {
+func (searchParameters) Run() (results interface{}, err error) {
 	return nil, errors.New("search failed")
 }
 
-func Search(query string, parameters SearchParameters)  {
-	search := SearchParameters{
+func Search(query string, params []string) {
+	search := searchParameters{
 		Query: query,
 	}
 	search.Run()
