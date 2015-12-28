@@ -1,32 +1,42 @@
 package discogs
 import (
 	"testing"
-	"reflect"
-	"fmt"
 )
 
-func TestParameters(*testing.T) {
-	p := SearchParameters{}
-	typ := reflect.TypeOf(p)
-	for i := 0; i < typ.NumField(); i++ {
-    f := typ.Field(i)
-		choices := f.Tag.Get("choices")
-		if len(choices) != 0 {
-			fmt.Println(f.Name, "choices:", choices)
-		}
-	}
-}
-
 func TestSearchFunction(*testing.T) {
-	params := SearchParameters{
-		Query: "Blakroc",
-		Type: "album",
+	api := API{}
+	params := map[string]string{
+		"type": "release",
 	}
-	results, err := params.Run()
+	results, err := api.Search("blackroc", params)
 	if err != nil {
-		panic("search error")
+		panic(err)
 	}
 	if results == nil {
 		panic("empty result set")
+	}
+}
+
+func TestSearchInputValidation(*testing.T) {
+	api := API{}
+	badParam := map[string]string{
+		"typeee": "release",
+	}
+	results, err := api.Search("blackroc", badParam)
+	if err == nil {
+		panic("invalid search parameter given, but was not caught")
+	}
+	if results != nil {
+		panic("result set given for bad search")
+	}
+	invalidChoice := map[string]string{
+		"type": "album",
+	}
+	results, err = api.Search("blackroc", invalidChoice)
+	if err == nil {
+		panic("invalid choice given for parameter, but was not caught")
+	}
+	if results != nil {
+		panic("result set given for bad search")
 	}
 }
